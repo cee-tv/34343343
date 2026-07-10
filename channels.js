@@ -842,7 +842,7 @@ const channels = [
         name: 'Channel 77',
         category: 'Other',
         type: 'hls',
-        url: 'http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8',
+        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
     },
 ]
 
