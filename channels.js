@@ -837,6 +837,13 @@ const channels = [
             clearkey: {keyId: '81f3e6924c754a08b9215d7e9c3f6048', key: '094cd48e9729cb8bcb0e03e848fc8751'},
         },
     },
+    {
+        number: 77,
+        name: 'Channel 77',
+        category: 'Other',
+        type: 'hls',
+        url: 'http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8',
+    },
 ]
 
 function setupChannelList() {
