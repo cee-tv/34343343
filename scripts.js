@@ -922,6 +922,18 @@ function loadChannel(index) {
     });
 
     // Re-attach the persistent handlers from initPlayer() since we rebuilt.
+
+    // Live HLS streams have a short segment window (~60 s).  If the user
+    // pauses long enough for segments to expire and then resumes, JW Player
+    // throws 102630.  We track how long the stream has been paused and only
+    // force a live-edge reload when the pause is long enough to make stale
+    // segments likely (HLS_STALE_THRESHOLD_MS).
+    const isLive = channel.type === 'hls';
+    const HLS_STALE_THRESHOLD_MS = 30000; // 30 s — half the typical 60 s window
+    let pausedAt = null;
+    // Per-load token to detect stale handlers from a previous player instance.
+    const instanceToken = index + '_' + Date.now();
+
     jwPlayerInstance.on('error', (err) => {
         console.error('Player error:', err);
         if (!isReconnecting) attemptReconnection();
@@ -931,12 +943,28 @@ function loadChannel(index) {
         if (!isReconnecting) attemptReconnection();
     });
     jwPlayerInstance.on('play', () => {
+        // Freshness guard: if the active channel has already changed this
+        // handler belongs to a stale instance and must not act.
+        if (activeIndex !== index) return;
+
+        if (isLive && pausedAt !== null) {
+            const pausedDuration = Date.now() - pausedAt;
+            pausedAt = null;
+            if (pausedDuration >= HLS_STALE_THRESHOLD_MS) {
+                // Segments have likely expired — jump back to the live edge.
+                isReconnecting = true; // bypass the activeIndex === index guard
+                loadChannel(index);
+                return;
+            }
+        }
+        pausedAt = null;
         reconnectionAttempts = 0;
         isReconnecting = false;
         hideReconnectionMessage();
         startHealthCheck();
     });
     jwPlayerInstance.on('pause', () => {
+        if (isLive) pausedAt = Date.now();
         if (healthCheckInterval) { clearInterval(healthCheckInterval); healthCheckInterval = null; }
     });
     jwPlayerInstance.on('complete', () => {
