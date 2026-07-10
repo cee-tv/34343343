@@ -11,17 +11,24 @@ let jwPlayerInstance = null,
 //   (GitHub Pages), there's no local /proxy route, so requests are sent to
 //   the deployed Cloudflare Worker instead (see cloudflare-worker.js),
 //   which implements the same proxy logic and also serves the whole site.
-// - When the site IS the Cloudflare Worker deployment itself, relative
-//   "/proxy" already resolves correctly (same origin), so the absolute URL
-//   below is only actually needed for GitHub Pages.
-const CLOUDFLARE_WORKER_URL = 'https://34343343.ceephc.workers.dev';
+// - When the site IS the proxy backend's own deployment (e.g. the Vercel
+//   deployment itself, or the Cloudflare Worker), relative "/proxy" already
+//   resolves correctly (same origin), so the absolute URL below is only
+//   actually needed for hosts with no backend of their own (GitHub Pages).
+//
+// NOTE: Cloudflare Workers cannot be used as the proxy backend for this
+// site -- Cloudflare blocks outbound Worker fetches to bare IP addresses
+// like the upstream IPTV hosts here (error 1003, "Direct IP Access Not
+// Allowed"). Use Vercel (api/proxy.js + vercel.json in this repo) instead;
+// see api/proxy.js header comment for deploy steps.
+const STATIC_HOST_PROXY_BASE_URL = 'https://REPLACE-WITH-YOUR-VERCEL-URL.vercel.app';
 const PROXY_BASE_URL = (() => {
     const host = window.location.hostname;
     const hasOwnProxyBackend =
         host.endsWith('.repl.co') ||
         host.endsWith('.replit.dev') ||
-        host.endsWith('workers.dev');
-    return hasOwnProxyBackend ? '' : CLOUDFLARE_WORKER_URL;
+        host.endsWith('.vercel.app');
+    return hasOwnProxyBackend ? '' : STATIC_HOST_PROXY_BASE_URL;
 })();
 
 function proxiedUrl(targetUrl) {
