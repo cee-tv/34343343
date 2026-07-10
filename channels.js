@@ -1,19 +1,35 @@
 let jwPlayerInstance = null,
   activeIndex = -1
+
+// Base URL for the /proxy endpoint used by HLS channels that need
+// server-side proxying (mixed-content + CORS workaround, see server.py).
+//
+// - When this site is served BY server.py (e.g. on Replit), leave this as ''
+//   so requests hit the same origin's relative "/proxy?..." path.
+// - When this site is exported to a static host with no backend (GitHub
+//   Pages, Cloudflare Pages, etc.), deploy cloudflare-worker.js as a
+//   Cloudflare Worker (free tier) and paste its URL here, e.g.:
+//   const PROXY_BASE_URL = 'https://your-worker.yoursubdomain.workers.dev';
+const PROXY_BASE_URL = '';
+
+function proxiedUrl(targetUrl) {
+    return PROXY_BASE_URL + '/proxy?url=' + encodeURIComponent(targetUrl);
+}
+
 const channels = [
     {
         number: 1,
         name: 'Channel 77',
         category: 'Other',
         type: 'hls',
-        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
+        url: proxiedUrl('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
     },
     {
         number: 2,
         name: 'Channel 78',
         category: 'Other',
         type: 'hls',
-        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=440523&extension=m3u8'),
+        url: proxiedUrl('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=440523&extension=m3u8'),
     },
     {
         number: 3,
