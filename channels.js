@@ -3,25 +3,17 @@ let jwPlayerInstance = null,
 const channels = [
     {
         number: 1,
-        name: 'Bilyonaryoch',
-        category: 'MediaQuest',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/bilyonaryoch/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '2e7f9c518a424d30b2165c3e7a9d6041', key: '8c8c0ef924c982bc1dd92348e024cd4c'},
-        },
+        name: 'Channel 77',
+        category: 'Other',
+        type: 'hls',
+        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
     },
     {
         number: 2,
-        name: 'CNN Philippines',
-        category: 'MediaQuest',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cnn_rptv_prod_hd/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: 'b5d7a6219c434e188f026a3d7c5e9148', key: '28e1244057ff6feae879c1e985ded0fb'},
-        },
+        name: 'Channel 78',
+        category: 'Other',
+        type: 'hls',
+        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=440523&extension=m3u8'),
     },
     {
         number: 3,
@@ -839,10 +831,25 @@ const channels = [
     },
     {
         number: 77,
-        name: 'Channel 77',
-        category: 'Other',
-        type: 'hls',
-        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
+        name: 'Bilyonaryoch',
+        category: 'MediaQuest',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/bilyonaryoch/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '2e7f9c518a424d30b2165c3e7a9d6041', key: '8c8c0ef924c982bc1dd92348e024cd4c'},
+        },
+    },
+    {
+        number: 78,
+        name: 'CNN Philippines',
+        category: 'MediaQuest',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cnn_rptv_prod_hd/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'b5d7a6219c434e188f026a3d7c5e9148', key: '28e1244057ff6feae879c1e985ded0fb'},
+        },
     },
 ]
 
