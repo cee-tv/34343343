@@ -614,40 +614,29 @@ function startHealthCheck() {
 function attemptReconnection() {
     isReconnecting = true;
     reconnectionAttempts++;
-
-    // Show reconnection message (will show infinite attempt)
     showReconnectionMessage(reconnectionAttempts);
 
-    // Clear previous timeout
     if (reconnectTimeout) clearTimeout(reconnectTimeout);
 
-    // Attempt to reconnect
-    reconnectTimeout = setTimeout(async () => {
-        // Check if internet is back by testing a lightweight endpoint
-        try {
-            await fetch('https://www.google.com/favicon.ico', {
-                method: 'HEAD',
-                mode: 'no-cors'
-            });
-
-            // Internet is back - restart connection
-            if (activeIndex >= 0) {
-                loadChannel(activeIndex);
-            }
-
-            setTimeout(() => {
-                if (jwPlayerInstance && jwPlayerInstance.getState() === 'playing') {
-                    reconnectionAttempts = 0;
-                    isReconnecting = false;
-                    hideReconnectionMessage();
-                }
-            }, 2000);
-
-        } catch (error) {
-            // Internet still down - continue retrying indefinitely
-            // No maximum retry limit, just continue
-            attemptReconnection();
+    // Wait RECONNECT_DELAY then reload the channel.  We keep isReconnecting = true
+    // so the player's own error handler doesn't kick off a second attempt in
+    // parallel.  After reloading we give the stream up to 10 s to start
+    // playing; if it hasn't by then we increment the counter and try again.
+    reconnectTimeout = setTimeout(() => {
+        if (activeIndex < 0) {
+            // No channel selected — exit reconnect mode cleanly.
+            isReconnecting = false;
+            reconnectionAttempts = 0;
+            hideReconnectionMessage();
+            return;
         }
+
+        loadChannel(activeIndex); // preserves isReconnecting / reconnectionAttempts
+
+        // Follow-up: if the stream hasn't started within 10 s, retry.
+        reconnectTimeout = setTimeout(() => {
+            if (isReconnecting) attemptReconnection();
+        }, 10000);
     }, RECONNECT_DELAY);
 }
 
@@ -877,13 +866,20 @@ function initPlayer() {
 function loadChannel(index) {
     if (activeIndex === index && !isReconnecting) return;
 
+    // Switching to a different channel is a deliberate user action — always
+    // reset reconnection state so the new channel gets clean error handling.
+    // Reloading the *same* channel (isReconnecting=true) preserves the count
+    // so the counter keeps incrementing past #3.
+    const isSwitchingChannel = (activeIndex !== index);
+    if (isSwitchingChannel) {
+        reconnectionAttempts = 0;
+        isReconnecting = false;
+    }
+
     activeIndex = index;
     setupChannelList();
     showChannelInfo(index);
 
-    // Reset reconnection state
-    reconnectionAttempts = 0;
-    isReconnecting = false;
     if (reconnectTimeout) clearTimeout(reconnectTimeout);
     if (healthCheckInterval) clearInterval(healthCheckInterval);
 
@@ -900,7 +896,7 @@ function loadChannel(index) {
     const item = { sources: [source] };
     if (channel.drm) item.drm = channel.drm; // also at item-level for older JW builds
 
-    hideReconnectionMessage();
+    if (!isReconnecting) hideReconnectionMessage();
 
     // FIX: always rebuild the player via setup() per channel.
     // Why: switching between HLS and DRM-protected DASH on the same instance
