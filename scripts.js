@@ -779,7 +779,7 @@ function updateLoadingProgress(percent) {
 const originalLoadChannel = loadChannel;
 let __loadProgressInterval = null;
 let __loadSafetyTimeout = null;
-loadChannel = function(index) {
+loadChannel = async function(index) {
     // Cancel any in-flight previous load
     if (__loadProgressInterval) { clearInterval(__loadProgressInterval); __loadProgressInterval = null; }
     if (__loadSafetyTimeout) { clearTimeout(__loadSafetyTimeout); __loadSafetyTimeout = null; }
@@ -798,8 +798,13 @@ loadChannel = function(index) {
         updateLoadingProgress(progress);
     }, 100);
 
-    // Trigger the actual channel load FIRST — this may rebuild the player
-    originalLoadChannel(index);
+    // Trigger the actual channel load FIRST — this may rebuild the player.
+    // loadChannel is async (it awaits the DRM key fetch before calling
+    // jwplayer().setup()), so we must await it here too — otherwise this
+    // wrapper binds listeners before setup() has even run, and the loading
+    // indicator only ever clears via the 20s safety timeout instead of the
+    // real firstFrame/play event.
+    await originalLoadChannel(index);
 
     // Now (re)bind listeners on the CURRENT jwPlayerInstance
     if (jwPlayerInstance) {
