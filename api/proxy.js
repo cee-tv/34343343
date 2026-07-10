@@ -1,12 +1,13 @@
 /**
- * Vercel Edge Function version of server.py's HLS proxy.
+ * Vercel Node.js Serverless Function version of server.py's HLS proxy.
  *
- * Deploy this project on Vercel (free tier) to make proxied channels
- * (Channel 1/2, stream 1548700 & 440523) work when the site itself is
- * hosted on a static host with no backend, e.g. GitHub Pages. Unlike
- * Cloudflare Workers, Vercel Edge Functions are NOT blocked from making
- * outbound requests directly to raw IP addresses, so this works for
- * upstream IPTV servers identified only by IP (204.52.191.254 etc).
+ * IMPORTANT: this must run on Vercel's Node.js runtime, NOT the Edge
+ * runtime. Both Cloudflare Workers AND Vercel Edge Functions block
+ * outbound requests to bare IP addresses (error: "Direct IP access is not
+ * allowed"), because both route outbound fetch() through their global edge
+ * network. Vercel's Node.js Serverless Functions run as plain Node/Lambda
+ * processes instead, so they have no such restriction -- same as
+ * server.py's plain `http.client` requests.
  *
  * Deploy steps (no local tooling needed):
  *   1. https://vercel.com -> Add New -> Project -> Import this GitHub repo.
@@ -20,8 +21,6 @@
  * Security: only hostnames in ALLOWED_HOSTS are proxied; everything else is
  * rejected, mirroring server.py's allowlist.
  */
-
-export const config = { runtime: "edge" };
 
 const ALLOWED_HOSTS = new Set(["204.52.191.254", "185.245.1.107"]);
 
@@ -107,16 +106,30 @@ function rewriteM3u8(text, baseUrl) {
   return out.join("\n");
 }
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-  "Access-Control-Allow-Headers": "*",
-};
+function setCors(res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+}
 
-async function handleProxy(targetUrl) {
-  const safeUrl = validateUrl(targetUrl);
+module.exports = async (req, res) => {
+  setCors(res);
+
+  if (req.method === "OPTIONS") {
+    res.status(204).end();
+    return;
+  }
+
+  const target = req.query.url;
+  if (!target) {
+    res.status(400).send("Missing url param");
+    return;
+  }
+
+  const safeUrl = validateUrl(target);
   if (!safeUrl) {
-    return new Response("Forbidden", { status: 403, headers: CORS_HEADERS });
+    res.status(403).send("Forbidden");
+    return;
   }
 
   let upstream;
@@ -131,56 +144,37 @@ async function handleProxy(targetUrl) {
       redirect: "follow",
     });
   } catch (err) {
-    return new Response(`Upstream fetch failed: ${err}`, {
-      status: 502,
-      headers: CORS_HEADERS,
-    });
+    res.status(502).send(`Upstream fetch failed: ${err}`);
+    return;
   }
 
   const finalUrl = upstream.url || safeUrl;
 
   if (!upstream.ok) {
-    return new Response(await upstream.text().catch(() => ""), {
-      status: upstream.status,
-      headers: CORS_HEADERS,
-    });
+    const text = await upstream.text().catch(() => "");
+    res.status(upstream.status).send(text);
+    return;
   }
 
   if (finalUrl.split("?")[0].toLowerCase().endsWith(".ts")) {
-    const headers = new Headers(CORS_HEADERS);
-    headers.set("Content-Type", "video/mp2t");
+    res.setHeader("Content-Type", "video/mp2t");
     const len = upstream.headers.get("Content-Length");
-    if (len) headers.set("Content-Length", len);
-    return new Response(upstream.body, { status: 200, headers });
+    if (len) res.setHeader("Content-Length", len);
+    const buf = Buffer.from(await upstream.arrayBuffer());
+    res.status(200).send(buf);
+    return;
   }
 
   const bodyText = await upstream.text();
-  const headers = new Headers(CORS_HEADERS);
   if (bodyText.trimStart().startsWith("#EXTM3U")) {
-    headers.set("Content-Type", "application/vnd.apple.mpegurl");
-    return new Response(rewriteM3u8(bodyText, finalUrl), { status: 200, headers });
+    res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
+    res.status(200).send(rewriteM3u8(bodyText, finalUrl));
+    return;
   }
 
-  headers.set(
+  res.setHeader(
     "Content-Type",
     guessMime(finalUrl, upstream.headers.get("Content-Type") || "")
   );
-  return new Response(bodyText, { status: 200, headers });
-}
-
-export default async function handler(request) {
-  const url = new URL(request.url);
-
-  if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: CORS_HEADERS });
-  }
-
-  const target = url.searchParams.get("url");
-  if (!target) {
-    return new Response("Missing url param", {
-      status: 400,
-      headers: CORS_HEADERS,
-    });
-  }
-  return handleProxy(target);
-}
+  res.status(200).send(bodyText);
+};

@@ -21,7 +21,7 @@ let jwPlayerInstance = null,
 // like the upstream IPTV hosts here (error 1003, "Direct IP Access Not
 // Allowed"). Use Vercel (api/proxy.js + vercel.json in this repo) instead;
 // see api/proxy.js header comment for deploy steps.
-const STATIC_HOST_PROXY_BASE_URL = 'https://REPLACE-WITH-YOUR-VERCEL-URL.vercel.app';
+const STATIC_HOST_PROXY_BASE_URL = 'https://34343343.vercel.app';
 const PROXY_BASE_URL = (() => {
     const host = window.location.hostname;
     const hasOwnProxyBackend =
