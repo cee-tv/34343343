@@ -21,7 +21,8 @@ import urllib.parse
 from urllib.parse import urlparse, urljoin
 
 PORT = 5000
-PROXY_TIMEOUT = 15  # seconds
+PROXY_TIMEOUT = 15   # seconds
+STREAM_CHUNK  = 65536  # 64 KB chunks for streaming .ts segments
 
 # ── Allowlist ────────────────────────────────────────────────────────────────
 # Add every upstream hostname / IP that any proxied channel needs.
@@ -176,16 +177,39 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             )
             with urllib.request.urlopen(req, timeout=PROXY_TIMEOUT) as resp:
                 final_url = resp.url
-                body      = resp.read()
                 server_ct = resp.headers.get("Content-Type", "")
 
-            if body.lstrip().startswith(b"#EXTM3U"):
-                ct   = "application/vnd.apple.mpegurl"
-                body = _rewrite_m3u8(body, final_url)
-            else:
-                ct = _guess_mime(final_url, server_ct)
+                # Stream .ts segments in chunks — they can be ~1 MB each and
+                # the player fetches several in parallel, so we must not
+                # buffer them fully before sending the first byte.
+                if final_url.split("?")[0].lower().endswith(".ts"):
+                    ct = "video/mp2t"
+                    content_length = resp.headers.get("Content-Length")
+                    self._write_headers(200, ct,
+                                        int(content_length) if content_length else None)
+                    try:
+                        while True:
+                            chunk = resp.read(STREAM_CHUNK)
+                            if not chunk:
+                                break
+                            self.wfile.write(chunk)
+                        self.wfile.flush()
+                    except (BrokenPipeError, ConnectionResetError):
+                        pass
+                    return
 
-            self._send(200, ct, body)
+                # Everything else (playlists, sub-playlists, keys) — buffer
+                # and inspect.  m3u8 playlists are small and need URI rewriting
+                # regardless of the serving URL's file extension or Content-Type
+                # (some origins serve them from .php endpoints).
+                body = resp.read()
+                if body.lstrip().startswith(b"#EXTM3U"):
+                    ct   = "application/vnd.apple.mpegurl"
+                    body = _rewrite_m3u8(body, final_url)
+                else:
+                    ct = _guess_mime(final_url, server_ct)
+                self._send(200, ct, body)
+                return
 
         except urllib.error.HTTPError as exc:
             self._send(exc.code, "text/plain", str(exc).encode())
@@ -221,6 +245,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 # ── Entry point ──────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    with http.server.HTTPServer(("0.0.0.0", PORT), Handler) as httpd:
+    # ThreadingHTTPServer handles each request in its own thread so the
+    # player can fetch multiple .ts segments concurrently instead of queuing.
+    with http.server.ThreadingHTTPServer(("0.0.0.0", PORT), Handler) as httpd:
         print(f"Serving on http://0.0.0.0:{PORT}")
         httpd.serve_forever()
