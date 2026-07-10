@@ -923,16 +923,15 @@ function loadChannel(index) {
 
     // Re-attach the persistent handlers from initPlayer() since we rebuilt.
 
-    // Live HLS streams have a short segment window (~60 s).  If the user
-    // pauses long enough for segments to expire and then resumes, JW Player
-    // throws 102630.  We track how long the stream has been paused and only
-    // force a live-edge reload when the pause is long enough to make stale
-    // segments likely (HLS_STALE_THRESHOLD_MS).
+    // Live HLS streams have a rolling segment window (~60 s).  Any pause
+    // puts the player behind the live edge; on resume JW Player tries to
+    // seek back to the paused timestamp, finds expired segments, and throws
+    // 102630.  We intercept the very first play-after-pause by refreshing the
+    // source on the SAME player instance (load + play) rather than rebuilding
+    // it.  This stays within the browser's user-gesture call stack so no
+    // second click is ever required.
     const isLive = channel.type === 'hls';
-    const HLS_STALE_THRESHOLD_MS = 30000; // 30 s — half the typical 60 s window
-    let pausedAt = null;
-    // Per-load token to detect stale handlers from a previous player instance.
-    const instanceToken = index + '_' + Date.now();
+    let liveWasPaused = false;
 
     jwPlayerInstance.on('error', (err) => {
         console.error('Player error:', err);
@@ -943,28 +942,36 @@ function loadChannel(index) {
         if (!isReconnecting) attemptReconnection();
     });
     jwPlayerInstance.on('play', () => {
-        // Freshness guard: if the active channel has already changed this
-        // handler belongs to a stale instance and must not act.
+        // Stale-handler guard: ignore events from a superseded channel load.
         if (activeIndex !== index) return;
 
-        if (isLive && pausedAt !== null) {
-            const pausedDuration = Date.now() - pausedAt;
-            pausedAt = null;
-            if (pausedDuration >= HLS_STALE_THRESHOLD_MS) {
-                // Segments have likely expired — jump back to the live edge.
-                isReconnecting = true; // bypass the activeIndex === index guard
+        if (isLive && liveWasPaused) {
+            liveWasPaused = false;
+            // Reload the source on the existing player instance.
+            // load() + play() run synchronously here, inside the user-gesture
+            // call stack, so the browser never blocks autoplay — no second
+            // click needed.
+            const normalizedType = channel.type === 'mpd' ? 'dash' : channel.type;
+            const freshItem = { sources: [{ file: channel.url, type: normalizedType }] };
+            try {
+                jwPlayerInstance.load([freshItem]);
+                jwPlayerInstance.play();
+            } catch (_) {
+                // Fallback: full rebuild if load/play fails for any reason.
+                isReconnecting = true;
                 loadChannel(index);
-                return;
             }
+            return;
         }
-        pausedAt = null;
+
+        liveWasPaused = false;
         reconnectionAttempts = 0;
         isReconnecting = false;
         hideReconnectionMessage();
         startHealthCheck();
     });
     jwPlayerInstance.on('pause', () => {
-        if (isLive) pausedAt = Date.now();
+        if (isLive) liveWasPaused = true;
         if (healthCheckInterval) { clearInterval(healthCheckInterval); healthCheckInterval = null; }
     });
     jwPlayerInstance.on('complete', () => {
