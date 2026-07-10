@@ -1,8 +1,0 @@
-uploads = []
-generated = []
-
-[[outputs]]
-id = "Fcr27OuXEP4Vtqat8DsjN"
-uri = "file://exports/ceeplay-project.zip"
-type = "unspecified"
-title = "ceeplay project files (zip)"

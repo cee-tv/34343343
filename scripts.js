@@ -779,7 +779,7 @@ function updateLoadingProgress(percent) {
 const originalLoadChannel = loadChannel;
 let __loadProgressInterval = null;
 let __loadSafetyTimeout = null;
-loadChannel = async function(index) {
+loadChannel = function(index) {
     // Cancel any in-flight previous load
     if (__loadProgressInterval) { clearInterval(__loadProgressInterval); __loadProgressInterval = null; }
     if (__loadSafetyTimeout) { clearTimeout(__loadSafetyTimeout); __loadSafetyTimeout = null; }
@@ -798,13 +798,8 @@ loadChannel = async function(index) {
         updateLoadingProgress(progress);
     }, 100);
 
-    // Trigger the actual channel load FIRST — this may rebuild the player.
-    // loadChannel is async (it awaits the DRM key fetch before calling
-    // jwplayer().setup()), so we must await it here too — otherwise this
-    // wrapper binds listeners before setup() has even run, and the loading
-    // indicator only ever clears via the 20s safety timeout instead of the
-    // real firstFrame/play event.
-    await originalLoadChannel(index);
+    // Trigger the actual channel load FIRST — this may rebuild the player
+    originalLoadChannel(index);
 
     // Now (re)bind listeners on the CURRENT jwPlayerInstance
     if (jwPlayerInstance) {
@@ -896,26 +891,8 @@ function initPlayer() {
     });
 }
 
-// DRM clearkeys are never shipped in the static channel list — they're
-// fetched one at a time from the server, and cached per channel number so
-// switching back to an already-loaded channel doesn't re-fetch.
-const drmKeyCache = new Map();
-
-async function fetchDrmKey(channelNumber) {
-    if (drmKeyCache.has(channelNumber)) return drmKeyCache.get(channelNumber);
-    try {
-        const res = await fetch(`/api/drm/${channelNumber}`);
-        if (!res.ok) return null;
-        const key = await res.json();
-        drmKeyCache.set(channelNumber, key);
-        return key;
-    } catch (_) {
-        return null;
-    }
-}
-
 // Update the loadChannel function to not auto-close sidebar
-async function loadChannel(index) {
+function loadChannel(index) {
     if (activeIndex === index && !isReconnecting) return;
 
     // Switching to a different channel is a deliberate user action — always
@@ -942,18 +919,11 @@ async function loadChannel(index) {
         file: channel.url,
         type: normalizedType,
     };
-    let drm = null;
-    if (channel.type === 'mpd' || channel.type === 'dash') {
-        drm = await fetchDrmKey(channel.number);
-    }
-    // Bail out if the user switched channels again while the key was loading.
-    if (activeIndex !== index) return;
-
-    if (drm) {
-        source.drm = { clearkey: drm };
+    if ((channel.type === 'mpd' || channel.type === 'dash') && channel.drm) {
+        source.drm = channel.drm;
     }
     const item = { sources: [source] };
-    if (drm) item.drm = { clearkey: drm }; // also at item-level for older JW builds
+    if (channel.drm) item.drm = channel.drm; // also at item-level for older JW builds
 
     if (!isReconnecting) hideReconnectionMessage();
 
