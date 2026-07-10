@@ -4,13 +4,25 @@ let jwPlayerInstance = null,
 // Base URL for the /proxy endpoint used by HLS channels that need
 // server-side proxying (mixed-content + CORS workaround, see server.py).
 //
-// - When this site is served BY server.py (e.g. on Replit), leave this as ''
-//   so requests hit the same origin's relative "/proxy?..." path.
-// - When this site is exported to a static host with no backend (GitHub
-//   Pages, Cloudflare Pages, etc.), deploy cloudflare-worker.js as a
-//   Cloudflare Worker (free tier) and paste its URL here, e.g.:
-//   const PROXY_BASE_URL = 'https://your-worker.yoursubdomain.workers.dev';
-const PROXY_BASE_URL = '';
+// - When this site is served BY server.py (e.g. on Replit dev/preview),
+//   requests use the same origin's relative "/proxy?..." path, since
+//   server.py implements that route itself.
+// - When this site is exported to a static host with no backend of its own
+//   (GitHub Pages), there's no local /proxy route, so requests are sent to
+//   the deployed Cloudflare Worker instead (see cloudflare-worker.js),
+//   which implements the same proxy logic and also serves the whole site.
+// - When the site IS the Cloudflare Worker deployment itself, relative
+//   "/proxy" already resolves correctly (same origin), so the absolute URL
+//   below is only actually needed for GitHub Pages.
+const CLOUDFLARE_WORKER_URL = 'https://34343343.ceephc.workers.dev';
+const PROXY_BASE_URL = (() => {
+    const host = window.location.hostname;
+    const hasOwnProxyBackend =
+        host.endsWith('.repl.co') ||
+        host.endsWith('.replit.dev') ||
+        host.endsWith('workers.dev');
+    return hasOwnProxyBackend ? '' : CLOUDFLARE_WORKER_URL;
+})();
 
 function proxiedUrl(targetUrl) {
     return PROXY_BASE_URL + '/proxy?url=' + encodeURIComponent(targetUrl);

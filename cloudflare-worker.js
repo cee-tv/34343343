@@ -173,7 +173,7 @@ async function handleProxy(targetUrl) {
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
@@ -189,6 +189,13 @@ export default {
         });
       }
       return handleProxy(target);
+    }
+
+    // Any other path: serve the static site itself (index.html, scripts.js,
+    // channels.js, styles.css, etc.) via the ASSETS binding configured in
+    // wrangler.toml, so this single Worker doubles as full site hosting.
+    if (env && env.ASSETS) {
+      return env.ASSETS.fetch(request);
     }
 
     return new Response("Not found. Use /proxy?url=<encoded-url>", {
