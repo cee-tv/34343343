@@ -854,7 +854,6 @@ function initPlayer() {
         stretching: 'exactfit',
         aspectratio: '16:9',
         primary: 'html5',
-        hlshtml: true,
         displaytitle: false,
         logo: { hide: true },
     });
@@ -940,7 +939,6 @@ function loadChannel(index) {
         stretching: 'exactfit',
         aspectratio: '16:9',
         primary: 'html5',
-        hlshtml: true,
         displaytitle: false,
         logo: { hide: true },
         playlist: [item],
