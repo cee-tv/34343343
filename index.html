@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<title>ceeplay</title>
+<link rel="icon" type="image/png" href="bisdaktv.png">
+<script src="https://ssl.p.jwpcdn.com/player/v/8.26.7/jwplayer.js"></script>
+<script>jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";</script>
+<!-- disable-devtool removed: was masking real player errors -->
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Remove orientation transform styles */
+</style>
+</head>
+<body class="dark-theme">
+    <!-- Add startup overlay -->
+    <div id="startupOverlay" class="startup-overlay">
+        <div class="startup-content">
+            <h1 class="startup-title">ceeplay</h1>
+            <p class="startup-subtitle">Your gateway to endless entertainment</p>
+            <button id="startWatchingBtn" class="start-watching-btn">
+                <span>Start Watching</span>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <div class="top-controls">
+                    <div id="channelCount"></div>
+                </div>
+                
+                <div class="search-wrapper">
+                    <span class="search-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </span>
+                    <input
+                    class="search-input"
+                    type="search"
+                    placeholder="Search channel..."
+                    oninput="setupChannelList()"
+                    id="searchInput"
+                    />
+                </div>
+
+                <select id="categoryFilter" onchange="setupChannelList()">
+                    <option value="all">All Channels</option>
+                    <option value="Cignal">Cignal</option>
+                    <option value="JungoTV">JungoTV</option>
+                    <option value="SamsungTV">SamsungTV</option>
+                    <option value="iWantTFC">iWantTFC</option>
+                    <option value="Yt Stream">Yt Stream</option>
+                </select>
+                
+                <div class="list-container">
+                    <ul class="channel-list" id="channelList"></ul>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Add floating toggle button -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <span class="arrow-icon">☰</span>
+        </button>
+        
+        <div class="video-container">
+            <div id="clock"></div>
+            <div id="player"></div>
+            <div id="fallbackMessage"></div>
+        </div>
+    </div>
+<script src="scripts.js"></script>
+<script src="channels.js"></script>
+</body>
+</html>
