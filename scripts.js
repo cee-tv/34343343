@@ -128,6 +128,7 @@ function updateClock() {
 
 function populateCategoryDropdown() {
   const dropdown = document.getElementById('categoryFilter');
+  dropdown.innerHTML = '';
   const categories = [...new Set(channels.map(ch => ch.category))].sort();
 
   // Add "All" option first
