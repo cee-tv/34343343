@@ -540,6 +540,13 @@ const channels = [
         type: 'hls',
         url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
     },
+    {
+        number: 78,
+        name: 'Channel 78',
+        category: 'Other',
+        type: 'hls',
+        url: '/proxy?url=' + encodeURIComponent('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=440523&extension=m3u8'),
+    },
 ]
 
 function setupChannelList() {
