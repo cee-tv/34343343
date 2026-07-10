@@ -891,8 +891,26 @@ function initPlayer() {
     });
 }
 
+// DRM clearkeys are never shipped in the static channel list — they're
+// fetched one at a time from the server, and cached per channel number so
+// switching back to an already-loaded channel doesn't re-fetch.
+const drmKeyCache = new Map();
+
+async function fetchDrmKey(channelNumber) {
+    if (drmKeyCache.has(channelNumber)) return drmKeyCache.get(channelNumber);
+    try {
+        const res = await fetch(`/api/drm/${channelNumber}`);
+        if (!res.ok) return null;
+        const key = await res.json();
+        drmKeyCache.set(channelNumber, key);
+        return key;
+    } catch (_) {
+        return null;
+    }
+}
+
 // Update the loadChannel function to not auto-close sidebar
-function loadChannel(index) {
+async function loadChannel(index) {
     if (activeIndex === index && !isReconnecting) return;
 
     // Switching to a different channel is a deliberate user action — always
@@ -919,11 +937,18 @@ function loadChannel(index) {
         file: channel.url,
         type: normalizedType,
     };
-    if ((channel.type === 'mpd' || channel.type === 'dash') && channel.drm) {
-        source.drm = channel.drm;
+    let drm = null;
+    if (channel.type === 'mpd' || channel.type === 'dash') {
+        drm = await fetchDrmKey(channel.number);
+    }
+    // Bail out if the user switched channels again while the key was loading.
+    if (activeIndex !== index) return;
+
+    if (drm) {
+        source.drm = { clearkey: drm };
     }
     const item = { sources: [source] };
-    if (channel.drm) item.drm = channel.drm; // also at item-level for older JW builds
+    if (drm) item.drm = { clearkey: drm }; // also at item-level for older JW builds
 
     if (!isReconnecting) hideReconnectionMessage();
 
