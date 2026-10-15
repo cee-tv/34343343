@@ -38,65 +38,40 @@ function proxiedUrl(targetUrl) {
 const channels = [
     {
         number: 1,
-        name: 'Channel 77',
-        category: 'Other',
-        type: 'hls',
-        url: proxiedUrl('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=1548700&extension=m3u8'),
+        name: 'KAPATID CHANNEL',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/kapatid_hd/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '8f7a2c913d6b4e5a9f127c8d4e6a1b90', key: 'a73d3d1211fb23084c62572706f45397'},
+        },
     },
     {
         number: 2,
-        name: 'Channel 78',
-        category: 'Other',
-        type: 'hls',
-        url: proxiedUrl('http://204.52.191.254/play/live.php?mac=00:1A:79:7b:ab:a5&stream=440523&extension=m3u8'),
+        name: 'TV5',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/tv5_hd/default1/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '9c3e7a516d824f04a9175b8c2e3d7040', key: '524a9c2cec98272f71c347345a3fd12e'},
+        },
     },
     {
         number: 3,
-        name: 'True FM TV',
-        category: 'MediaQuest',
+        name: 'STUDIO UNIVERSAL',
+        category: 'Cignal',
         type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/truefm_tv/default/index.mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_studio_universal_hd/default/index.mpd',
         drm:
         {
-            clearkey: {keyId: '8c4e9a516d724f30b2187a3c5e9d6041', key: 'e25c167573772b510ff8e5282560a349'},
+            clearkey: {keyId: 'f8391e9130634854b4614f02ec028ea7', key: '9b9640f873cf906b91dd03c02612d5ce'},
         },
     },
     {
         number: 4,
-        name: 'Hits Now',
-        category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_hitsnow/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '24a8e6917c534d809f165b3e6a2d9047', key: '183f05bcb80e9cfcb613b8c767777f27'},
-        },
-    },
-    {
-        number: 5,
-        name: 'HBO HD',
-        category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_hbohd/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: 'd7f3c8215a944e068b176c9d2a5f3048', key: '93c0a798243d6443864d1a7ff3e42c05'},
-        },
-    },
-    {
-        number: 6,
-        name: 'TV Maria',
-        category: 'MediaQuest',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/tvmaria_prd/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '6a2d9f815c744e30b9168f3a7d2c5049', key: 'fb07ec8ca16ffdb8b8a045fa4c8aac74'},
-        },
-    },
-    {
-        number: 7,
-        name: 'HBO Family',
+        name: 'NCAA NXT',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_hbofam/default/index.mpd',
@@ -106,20 +81,108 @@ const channels = [
         },
     },
     {
-        number: 8,
-        name: 'Cinemax',
+        number: 5,
+        name: 'ABANTE NEWS',
         category: 'Cignal',
         type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_cinemax/default/index.mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_abante_news/default/index.mpd',
         drm:
         {
-            clearkey: {keyId: 'd7a9c5215e364b809f148c2d6a7e3045', key: 'c92a3b4a7fe9fab97c130468260b963f'},
+            clearkey: {keyId: 'e5b2c7091a464d839f25b7c6e018a432', key: '9a933efca0ae690102cc9594b29803bf'},
+        },
+    },
+    {
+        number: 6,
+        name: 'NBA TV PHILIPPINES',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cgnl_nba/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '2f7c9a615d834e40b2188a6d3c7f9042', key: '41d2ade5ff1798859420e925d5d2080d'},
+        },
+    },
+    {
+        number: 7,
+        name: 'UAAP VARSITY',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_uaap_cplay_sd/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'b6c9f4218d734a059e165c3d7a2f8049', key: '948aa5c0d0c15c70efb9257f5b75c379'},
+        },
+    },
+    {
+        number: 8,
+        name: 'PBA RUSH',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_pbarush_hd1/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '91a5e6327c844f09b2186d3a5e7c2041', key: '984beb3aeff3554c1a5acc04d6044e55'},
         },
     },
     {
         number: 9,
-        name: 'Lotus Macau',
-        category: 'MediaQuest',
+        name: 'BBC LIFESTYLE',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_bbclifestyle/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '34880f56627c11ee8c990242ac120002', key: 'c23677c829bb244b79a3dc09ffd88ca0'},
+        },
+    },
+    {
+        number: 10,
+        name: 'BILYONARYO CHANNEL',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/bilyonaryoch/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '2e7f9c518a424d30b2165c3e7a9d6041', key: '8c8c0ef924c982bc1dd92348e024cd4c'},
+        },
+    },
+    {
+        number: 11,
+        name: 'RPTV',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cnn_rptv_prod_hd/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'b5d7a6219c434e188f026a3d7c5e9148', key: '28e1244057ff6feae879c1e985ded0fb'},
+        },
+    },
+    {
+        number: 12,
+        name: 'HITS NOW',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_hitsnow/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '24a8e6917c534d809f165b3e6a2d9047', key: '183f05bcb80e9cfcb613b8c767777f27'},
+        },
+    },
+    {
+        number: 13,
+        name: 'TV MARIA',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/tvmaria_prd/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '6a2d9f815c744e30b9168f3a7d2c5049', key: 'fb07ec8ca16ffdb8b8a045fa4c8aac74'},
+        },
+    },
+    {
+        number: 14,
+        name: 'LOTUS MACAU',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/lotusmacau_prd/default/index.mpd',
         drm:
@@ -128,30 +191,8 @@ const channels = [
         },
     },
     {
-        number: 10,
-        name: 'HBO Signature',
-        category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_hbosign/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '74d8f5916c234b80a9179e5d3c7a2046', key: 'f8d2753ff54579efc01d3373acf21f96'},
-        },
-    },
-    {
-        number: 11,
-        name: 'HBO Hits',
-        category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_hbohits/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '3e8c5a917d424f06b2196a5c9e2d8043', key: '516c47ccef00a12421d9805c8c1c6c1d'},
-        },
-    },
-    {
-        number: 12,
-        name: 'TVN Movie',
+        number: 15,
+        name: 'TVN MOVIES',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_tvnmovie/default/index.mpd',
@@ -161,8 +202,8 @@ const channels = [
         },
     },
     {
-        number: 13,
-        name: 'DreamWorks',
+        number: 16,
+        name: 'DREAMWORKS TAGALIZED',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_dreamworktag/default/index.mpd',
@@ -172,8 +213,8 @@ const channels = [
         },
     },
     {
-        number: 14,
-        name: 'TVN Premier',
+        number: 17,
+        name: 'TVN PREMIUM',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_tvnpre/default/index.mpd',
@@ -183,8 +224,8 @@ const channels = [
         },
     },
     {
-        number: 15,
-        name: 'Tagalog Movie Channel',
+        number: 18,
+        name: 'TMC',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_tagalogmovie/default/index.mpd',
@@ -194,20 +235,9 @@ const channels = [
         },
     },
     {
-        number: 16,
-        name: 'Kapatid',
-        category: 'MediaQuest',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/kapatid_hd/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '8f7a2c913d6b4e5a9f127c8d4e6a1b90', key: 'a73d3d1211fb23084c62572706f45397'},
-        },
-    },
-    {
-        number: 17,
-        name: 'Global Trekker',
-        category: 'MediaQuest',
+        number: 19,
+        name: 'GLOBAL TREKKER',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/globaltrekker/default/index.mpd',
         drm:
@@ -216,9 +246,9 @@ const channels = [
         },
     },
     {
-        number: 18,
+        number: 20,
         name: 'CGTN',
-        category: 'MediaQuest',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cgtn/default/index.mpd',
         drm:
@@ -227,30 +257,8 @@ const channels = [
         },
     },
     {
-        number: 19,
-        name: 'NBA TV',
-        category: 'MediaQuest',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cgnl_nba/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '2f7c9a615d834e40b2188a6d3c7f9042', key: '41d2ade5ff1798859420e925d5d2080d'},
-        },
-    },
-    {
-        number: 20,
-        name: 'Vibe TV',
-        category: 'MediaQuest',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/tv5_hd/default1/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '9c3e7a516d824f04a9175b8c2e3d7040', key: '524a9c2cec98272f71c347345a3fd12e'},
-        },
-    },
-    {
         number: 21,
-        name: 'Cartoon Network HD',
+        name: 'CARTOON NETWORK',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cartoonnetworkhd/default/index.mpd',
@@ -261,7 +269,7 @@ const channels = [
     },
     {
         number: 22,
-        name: 'CNN HD',
+        name: 'CNN',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_cnnhd/default/index.mpd',
@@ -283,7 +291,7 @@ const channels = [
     },
     {
         number: 24,
-        name: 'DreamWorks HD',
+        name: 'DREAMWORKS',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_dreamworks_hd1/default/index.mpd',
@@ -294,7 +302,7 @@ const channels = [
     },
     {
         number: 25,
-        name: 'Animal Planet',
+        name: 'ANIMAL PLANET',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_animal_planet_sd/default/index.mpd',
@@ -305,7 +313,7 @@ const channels = [
     },
     {
         number: 26,
-        name: 'SPOTV HD',
+        name: 'SPOTV',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_spotvhd/default/index.mpd',
@@ -316,7 +324,7 @@ const channels = [
     },
     {
         number: 27,
-        name: 'PTV 4',
+        name: 'PTV4',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_ptv4_sd/default/index.mpd',
@@ -327,7 +335,7 @@ const channels = [
     },
     {
         number: 28,
-        name: 'Premier Sports HD',
+        name: 'PREMIER SPORTS',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_ps_hd1/default/index.mpd',
@@ -338,8 +346,8 @@ const channels = [
     },
     {
         number: 29,
-        name: 'Rock Extreme',
-        category: 'MediaQuest',
+        name: 'ROCK EXTREME',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_rockextreme/default/index.mpd',
         drm:
@@ -349,8 +357,8 @@ const channels = [
     },
     {
         number: 30,
-        name: 'Tap Sports',
-        category: 'MediaQuest',
+        name: 'TAP SPORTS',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_tapsports/default/index.mpd',
         drm:
@@ -360,7 +368,7 @@ const channels = [
     },
     {
         number: 31,
-        name: 'BBC Earth HD',
+        name: 'BBC EARTH',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_bbcearth_hd1/default/index.mpd',
@@ -371,7 +379,7 @@ const channels = [
     },
     {
         number: 32,
-        name: 'One Sports Plus HD',
+        name: 'ONE SPORTS PLUS',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_onesportsplus_hd1/default/index.mpd',
@@ -382,19 +390,19 @@ const channels = [
     },
     {
         number: 33,
-        name: 'SPOTV 2 HD',
-        category: 'MediaQuest',
+        name: 'SPOTV2',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_spotv2hd/default/index.mpd',
         drm:
         {
-            clearkey: {keyId: 'b2d8f6315c494e07a8129f6a3d5c2048', key: '6b4247def21bbd0d08629a3cb4c62ee9'},
+            clearkey: {keyId: 'f28d730090f64e229fb255b2afa6e36e', key: '53d432c60f419541c7319dc1b6508e2c'},
         },
     },
     {
         number: 34,
-        name: 'Rock Entertainment',
-        category: 'MediaQuest',
+        name: 'ROCK ENTERTAINMENT',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_rockentertainment/default/index.mpd',
         drm:
@@ -404,8 +412,8 @@ const channels = [
     },
     {
         number: 35,
-        name: 'Discovery Channel',
-        category: 'MediaQuest',
+        name: 'DISCOVERY',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/discovery/default/index.mpd',
         drm:
@@ -415,8 +423,8 @@ const channels = [
     },
     {
         number: 36,
-        name: 'CCTV 4',
-        category: 'MediaQuest',
+        name: 'CCTV4',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_cctv4/default/index.mpd',
         drm:
@@ -426,19 +434,8 @@ const channels = [
     },
     {
         number: 37,
-        name: 'PBA Rush HD',
+        name: 'ARIRANG',
         category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_pbarush_hd1/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: '91a5e6327c844f09b2186d3a5e7c2041', key: '984beb3aeff3554c1a5acc04d6044e55'},
-        },
-    },
-    {
-        number: 38,
-        name: 'Arirang',
-        category: 'MediaQuest',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/arirang_sd/default/index.mpd',
         drm:
@@ -447,9 +444,9 @@ const channels = [
         },
     },
     {
-        number: 39,
-        name: 'KBS World',
-        category: 'MediaQuest',
+        number: 38,
+        name: 'KBS WORLD',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/kbsworld/default/index.mpd',
         drm:
@@ -458,9 +455,9 @@ const channels = [
         },
     },
     {
-        number: 40,
-        name: 'One News HD',
-        category: 'MediaQuest',
+        number: 39,
+        name: 'ONE NEWS',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/onenews_hd1/default/index.mpd',
         drm:
@@ -469,9 +466,9 @@ const channels = [
         },
     },
     {
-        number: 41,
-        name: 'KIX HD',
-        category: 'MediaQuest',
+        number: 40,
+        name: 'KIX',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/kix_hd1/default/index.mpd',
         drm:
@@ -480,9 +477,9 @@ const channels = [
         },
     },
     {
-        number: 42,
-        name: 'Lifetime',
-        category: 'MediaQuest',
+        number: 41,
+        name: 'LIFETIME',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_lifetime/default/index.mpd',
         drm:
@@ -491,9 +488,9 @@ const channels = [
         },
     },
     {
-        number: 43,
-        name: 'BBC World News',
-        category: 'MediaQuest',
+        number: 42,
+        name: 'BBC WORLD NEWS',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/bbcworld_news_sd/default/index.mpd',
         drm:
@@ -502,9 +499,9 @@ const channels = [
         },
     },
     {
-        number: 44,
-        name: 'HGTV HD',
-        category: 'MediaQuest',
+        number: 43,
+        name: 'HGTV',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/hgtv_hd1/default/index.mpd',
         drm:
@@ -513,20 +510,9 @@ const channels = [
         },
     },
     {
-        number: 45,
-        name: 'UAAP Varsity Channel',
+        number: 44,
+        name: 'TRAVEL CHANNEL',
         category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_uaap_cplay_sd/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: 'b6c9f4218d734a059e165c3d7a2f8049', key: '948aa5c0d0c15c70efb9257f5b75c379'},
-        },
-    },
-    {
-        number: 46,
-        name: 'Travel Channel',
-        category: 'MediaQuest',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/travel_channel_sd/default/index.mpd',
         drm:
@@ -535,9 +521,9 @@ const channels = [
         },
     },
     {
-        number: 47,
-        name: 'Premier Sports 2 HD',
-        category: 'MediaQuest',
+        number: 45,
+        name: 'PREMIER SPORTS 2',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/premiersports2hd/default/index.mpd',
         drm:
@@ -546,9 +532,9 @@ const channels = [
         },
     },
     {
-        number: 48,
-        name: 'Hits HD',
-        category: 'MediaQuest',
+        number: 46,
+        name: 'HITS',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/hits_hd1/default/index.mpd',
         drm:
@@ -557,9 +543,9 @@ const channels = [
         },
     },
     {
-        number: 49,
-        name: 'Al Jazeera',
-        category: 'MediaQuest',
+        number: 47,
+        name: 'AL JAZEERA',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_aljazeera/default/index.mpd',
         drm:
@@ -568,9 +554,9 @@ const channels = [
         },
     },
     {
-        number: 50,
-        name: 'One PH',
-        category: 'MediaQuest',
+        number: 48,
+        name: 'ONE PH',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/oneph_sd/default/index.mpd',
         drm:
@@ -579,8 +565,8 @@ const channels = [
         },
     },
     {
-        number: 51,
-        name: 'Food Network HD',
+        number: 49,
+        name: 'FOOD NETWORK',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_foodnetwork_hd1/default/index.mpd',
@@ -590,9 +576,9 @@ const channels = [
         },
     },
     {
-        number: 52,
-        name: 'DepEd TV',
-        category: 'MediaQuest',
+        number: 50,
+        name: 'DEPED CHANNEL',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/depedch_sd/default/index.mpd',
         drm:
@@ -601,9 +587,9 @@ const channels = [
         },
     },
     {
-        number: 53,
-        name: 'History HD',
-        category: 'MediaQuest',
+        number: 51,
+        name: 'HISTORY',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_historyhd/default/index.mpd',
         drm:
@@ -612,9 +598,9 @@ const channels = [
         },
     },
     {
-        number: 54,
-        name: 'Fashion TV HD',
-        category: 'MediaQuest',
+        number: 52,
+        name: 'FASHION TV',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/fashiontvhd/default/index.mpd',
         drm:
@@ -623,9 +609,9 @@ const channels = [
         },
     },
     {
-        number: 55,
-        name: 'Cinema One Pinoy',
-        category: 'MediaQuest',
+        number: 53,
+        name: 'CELESTIAL MOVIES PINOY',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/celmovie_pinoy_sd/default/index.mpd',
         drm:
@@ -634,9 +620,9 @@ const channels = [
         },
     },
     {
-        number: 56,
-        name: 'Bloomberg',
-        category: 'MediaQuest',
+        number: 54,
+        name: 'BLOOMBERG',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/bloomberg_sd/default/index.mpd',
         drm:
@@ -645,9 +631,9 @@ const channels = [
         },
     },
     {
-        number: 57,
-        name: 'NHK Japan',
-        category: 'MediaQuest',
+        number: 55,
+        name: 'NHK JAPAN',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_nhk_japan/default/index.mpd',
         drm:
@@ -656,9 +642,9 @@ const channels = [
         },
     },
     {
-        number: 58,
-        name: 'Asian Food Network',
-        category: 'MediaQuest',
+        number: 56,
+        name: 'ASIAN FOOD NETWORK',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/asianfoodnetwork_sd/default/index.mpd',
         drm:
@@ -667,8 +653,8 @@ const channels = [
         },
     },
     {
-        number: 59,
-        name: 'One Sports HD',
+        number: 57,
+        name: 'ONE SPORTS',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_onesports_hd/default/index.mpd',
@@ -678,9 +664,9 @@ const channels = [
         },
     },
     {
-        number: 60,
-        name: 'Nick Jr',
-        category: 'MediaQuest',
+        number: 58,
+        name: 'NICK JR',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_nickjr/default/index.mpd',
         drm:
@@ -689,19 +675,19 @@ const channels = [
         },
     },
     {
-        number: 61,
-        name: 'Warner TV HD',
+        number: 59,
+        name: 'WARNER TV',
         category: 'Cignal',
         type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_warnerhd/default1/index.mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_warnerhd/default/index.mpd',
         drm:
         {
             clearkey: {keyId: 'c4a8d5319e624f078b156d3c7a5e2049', key: 'cee9422b4a40d85589f36f1d76fb144f'},
         },
     },
     {
-        number: 62,
-        name: 'Animax',
+        number: 60,
+        name: 'ANIMAX',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_animax_sd_new/default/index.mpd',
@@ -711,9 +697,9 @@ const channels = [
         },
     },
     {
-        number: 63,
-        name: 'IBC 13',
-        category: 'MediaQuest',
+        number: 61,
+        name: 'IBC13',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/ibc13_sd_new/default/index.mpd',
         drm:
@@ -722,7 +708,7 @@ const channels = [
         },
     },
     {
-        number: 64,
+        number: 62,
         name: 'AXN',
         category: 'Cignal',
         type: 'mpd',
@@ -733,8 +719,8 @@ const channels = [
         },
     },
     {
-        number: 65,
-        name: 'TAP Movies HD',
+        number: 63,
+        name: 'TAP MOVIES',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_tapmovies_hd1/default/index.mpd',
@@ -744,8 +730,8 @@ const channels = [
         },
     },
     {
-        number: 66,
-        name: 'Moonbug Kids',
+        number: 64,
+        name: 'MOONBUG KIDS',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_moonbug_kids_sd/default/index.mpd',
@@ -755,9 +741,9 @@ const channels = [
         },
     },
     {
-        number: 67,
-        name: 'France 24',
-        category: 'MediaQuest',
+        number: 65,
+        name: 'FRANCE24',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/france24/default/index.mpd',
         drm:
@@ -766,20 +752,20 @@ const channels = [
         },
     },
     {
-        number: 68,
-        name: 'ABC Australia',
-        category: 'MediaQuest',
+        number: 66,
+        name: 'ABC AUSTRALIA',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/abc_aus/default/index.mpd',
         drm:
         {
-            clearkey: {keyId: 'ab3d7e816f254c9490185d2a8f7e3640', key: 'a3bbc044cac690469a243c43f642c467'},
+            clearkey: {keyId: 'd6f1a8c29b7e4d5a8f332c1e9d7b6a90', key: '790bd17b9e623e832003a993a2de1d87'},
         },
     },
     {
-        number: 69,
-        name: 'Hits Movies',
-        category: 'MediaQuest',
+        number: 67,
+        name: 'HITS MOVIES',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/hitsmovies/default/index.mpd',
         drm:
@@ -788,9 +774,9 @@ const channels = [
         },
     },
     {
-        number: 70,
-        name: 'Channel NewsAsia',
-        category: 'MediaQuest',
+        number: 68,
+        name: 'CHANNEL NEWS ASIA',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/channelnewsasia/default/index.mpd',
         drm:
@@ -799,8 +785,8 @@ const channels = [
         },
     },
     {
-        number: 71,
-        name: 'Thrill',
+        number: 69,
+        name: 'THRILL',
         category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_thrill_sd/default/index.mpd',
@@ -810,9 +796,9 @@ const channels = [
         },
     },
     {
-        number: 72,
-        name: 'Crime & Investigation',
-        category: 'MediaQuest',
+        number: 70,
+        name: 'CRIME + INVESTIGATION',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/crime_invest/default/index.mpd',
         drm:
@@ -821,20 +807,9 @@ const channels = [
         },
     },
     {
-        number: 73,
-        name: 'Buko',
+        number: 71,
+        name: 'KNOWLEDGE CHANNEL',
         category: 'Cignal',
-        type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cg_buko_sd/default/index.mpd',
-        drm:
-        {
-            clearkey: {keyId: 'c8b1d5f42a674e93b8016f2d9c7a5e34', key: '168bbf02d7eca252a61a402e25cb33f5'},
-        },
-    },
-    {
-        number: 74,
-        name: 'Knowledge Channel',
-        category: 'MediaQuest',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/knowledge_channel/default/index.mpd',
         drm:
@@ -843,9 +818,9 @@ const channels = [
         },
     },
     {
-        number: 75,
-        name: 'TV5 Monde',
-        category: 'MediaQuest',
+        number: 72,
+        name: 'TV5 MONDE',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_tv5_monde/default/index.mpd',
         drm:
@@ -854,9 +829,9 @@ const channels = [
         },
     },
     {
-        number: 76,
-        name: 'Nickelodeon',
-        category: 'MediaQuest',
+        number: 73,
+        name: 'NICKELODEON',
+        category: 'Cignal',
         type: 'mpd',
         url: 'https://ucdn.mediaquest.com.ph/bpk-tv/dr_nickelodeon/default/index.mpd',
         drm:
@@ -865,27 +840,115 @@ const channels = [
         },
     },
     {
-        number: 77,
-        name: 'Bilyonaryoch',
-        category: 'MediaQuest',
+        number: 74,
+        name: 'PILIPINAS LIVE 1',
+        category: 'Cignal',
         type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/bilyonaryoch/default/index.mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi1/default/index.mpd',
         drm:
         {
-            clearkey: {keyId: '2e7f9c518a424d30b2165c3e7a9d6041', key: '8c8c0ef924c982bc1dd92348e024cd4c'},
+            clearkey: {keyId: '73f8c2915d644e70b2189a3c6d7f2045', key: 'fb199597a99e601c9bc8767a1b20312b'},
+        },
+    },
+    {
+        number: 75,
+        name: 'PILIPINAS LIVE 2',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi2/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'c5a8f3917d424e809b166f3c2a7d9045', key: '6a7f2a17bad0a84674108234403d5fa0'},
+        },
+    },
+    {
+        number: 76,
+        name: 'PILIPINAS LIVE 3',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi3/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'c2f8d6917a354e60b2196d3c5a8f9042', key: '2f593fbabad7a9f968c9fec691d59806'},
+        },
+    },
+    {
+        number: 77,
+        name: 'PILIPINAS LIVE 4',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi4/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'e9a4d6316c854b008f175d3a7e2c9048', key: 'd7e06c12d35cfd2e13d8f3d3094941a3'},
         },
     },
     {
         number: 78,
-        name: 'CNN Philippines',
-        category: 'MediaQuest',
+        name: 'PILIPINAS LIVE 5',
+        category: 'Cignal',
         type: 'mpd',
-        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/cnn_rptv_prod_hd/default/index.mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi5/default/index.mpd',
         drm:
         {
-            clearkey: {keyId: 'b5d7a6219c434e188f026a3d7c5e9148', key: '28e1244057ff6feae879c1e985ded0fb'},
+            clearkey: {keyId: 'b4f7c8219d624e30a9156c3a5d7f2048', key: '60391d7d3bb726a4a95e66c4c0af219d'},
         },
     },
+    {
+        number: 79,
+        name: 'PILIPINAS LIVE 6',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi6/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'f3d8a6915c724b609e146a7f3c2d8049', key: '20b4724a4d406c3a89c7b0d7084626a0'},
+        },
+    },
+    {
+        number: 80,
+        name: 'PILIPINAS LIVE 7',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi7/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '5a7e9c316d424b80a2183f5c7d9e2046', key: '746ca1548780fc4d8cc9fc948403a3da'},
+        },
+    },
+    {
+        number: 81,
+        name: 'PILIPINAS LIVE 8',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi8/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'd6c9a4218e534f099b167c3a5d2e8048', key: '980ec0896ae1ba03f46d85453798b708'},
+        },
+    },
+    {
+        number: 82,
+        name: 'PILIPINAS LIVE 9',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi9/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '1c8e5a927d434f60b2196a3c9e5d8041', key: '33af0fd38e463d1c747a2cb0b203c42e'},
+        },
+    },
+    {
+        number: 83,
+        name: 'PILIPINAS LIVE 10',
+        category: 'Cignal',
+        type: 'mpd',
+        url: 'https://ucdn.mediaquest.com.ph/bpk-tv/pl_sdi10/default/index.mpd',
+        drm:
+        {
+            clearkey: {keyId: '63055a8904644407a64a57874703f71e', key: '0fd611777d37a7ff8afce19d9cee2e91'},
+        },
+    }
 ]
 
 function setupChannelList() {
